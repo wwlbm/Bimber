@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg" style="border-radius: 24px; border: none; overflow: hidden;">
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <h2 style="font-weight: 800; color: #333;">Join Bimber</h2>
+                        <p class="text-muted small">Create your profile and start matching</p>
+                    </div>
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="bimber-form">
+                            {% for field in form %}
+                                <div class="mb-3">
+                                    <label class="fw-bold small mb-1">{{ field.label }}</label>
+                                    {{ field }}
+
+                                    {% if field.errors %}
+                                        {% for error in field.errors %}
+                                            <div class="text-danger small mt-1">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    </div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn w-100 py-3 mt-3" style="background: linear-gradient(262deg, #ff7854 0%, #fd267d 100%); color: white; border: none; border-radius: 12px; font-weight: 700;">
+                            Sign Up
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-0 small text-muted">Already have an account?</p>
+                        <a href="{% url 'login' %}" style="color: #fd267d; text-decoration: none; font-weight: 700;">Log In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bimber-form p label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; color: #666; }
+    .bimber-form p input, .bimber-form p textarea, .bimber-form p select {
+        width: 100%; padding: 10px; border: 1px solid #eee; border-radius: 10px; background: #f8f9fa; margin-bottom: 10px;
+    }
+    input[type="file"] { background: white; border: 1px dashed #ccc; padding: 10px; }
+</style>
+{% endblock %}

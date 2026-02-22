@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: calc(100vh - 70px); background-color: #f0f2f5;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 col-lg-4">
+                <div class="card shadow-lg" style="border-radius: 24px; border: none; overflow: hidden;">
+                    <div class="card-body p-4 p-md-5">
+                        <div class="text-center mb-4">
+                            <div style="background: linear-gradient(262deg, #ff7854 0%, #fd267d 100%); width: 60px; height: 60px; border-radius: 15px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-fire" style="color: white; font-size: 2rem;"></i>
+                            </div>
+                            <h2 style="font-weight: 800; color: #333;">Welcome Back</h2>
+                            <p class="text-muted small">Log in to find your match</p>
+                        </div>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3 bimber-form">
+                                {{ form.as_p }}
+                            </div>
+                            <button type="submit" class="btn w-100 py-3" style="background: linear-gradient(262deg, #ff7854 0%, #fd267d 100%); color: white; border: none; border-radius: 12px; font-weight: 700; transition: 0.3s;">
+                                Log In
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <p class="mb-0 small text-muted">New to Bimber?</p>
+                            <a href="{% url 'register' %}" style="color: #fd267d; text-decoration: none; font-weight: 700;">Create Account</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bimber-form p label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; color: #666; }
+    .bimber-form p input {
+        width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; background: #f8f9fa; outline: none;
+    }
+    .bimber-form p input:focus { border-color: #fd267d; background: #fff; }
+</style>
+{% endblock %}

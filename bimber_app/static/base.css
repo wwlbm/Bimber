@@ -1,0 +1,44 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.min-vh-100 {
+    min-height: 100vh !important;
+}
+
+:root {
+    --bimber-gradient: linear-gradient(262deg, #ff7854 0%, #fd267d 100%);
+    --bimber-pink: #fd267d;
+}
+
+body {
+    background-color: #f0f2f5;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #424242;
+}
+
+.bg-bimber-gradient {
+    background: var(--bimber-gradient) !important;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.nav-link:hover {
+    opacity: 0.8;
+}

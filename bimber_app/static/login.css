@@ -1,0 +1,49 @@
+.login-card {
+    border: none;
+    border-radius: 25px;
+    background-color: #ffffff;
+}
+
+.login-title {
+    font-weight: 800;
+    color: #333;
+    letter-spacing: -0.5px;
+}
+
+.form-control {
+    background-color: #f8f9fa;
+    border: 1px solid #eee;
+    padding: 12px 15px;
+    font-size: 0.95rem;
+}
+
+.form-control:focus {
+    background-color: #fff;
+    border-color: #fd267d; /* Твой фирменный цвет */
+    box-shadow: 0 0 0 0.2rem rgba(253, 38, 125, 0.15);
+}
+
+.btn-bimber {
+    background: linear-gradient(262deg, #ff7854 0%, #fd267d 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-bimber:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(253, 38, 125, 0.3);
+    color: white;
+}
+
+.register-link {
+    color: #fd267d;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
