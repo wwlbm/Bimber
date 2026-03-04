@@ -1,51 +1,95 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4">
-            <div class="shadow-lg mx-auto" style="max-width: 380px; border-radius: 24px; overflow: hidden; background: white; border: none;">
+        <div class="col-lg-10 col-xl-9">
 
-                <div style="width: 100%; height: 450px; position: relative; overflow: hidden; background-color: #f8f9fa;">
-                    {% if user.photo %}
-                        <img src="{{ user.photo.url }}"
-                             style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
-                             alt="{{ user.username }}">
-                    {% else %}
-                        <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #adb5bd;">
-                            <i class="bi bi-person" style="font-size: 3rem;"></i>
-                            <span>No Photo</span>
-                        </div>
-                    {% endif %}
-                </div>
+            <div class="card shadow-lg border-0" style="border-radius: 30px; overflow: hidden; background: white;">
 
-                <div class="p-4">
-                    <div class="mb-3">
-                        <h2 style="font-weight: 800; font-size: 1.8rem; margin-bottom: 0;">
-                            {{ user.username }}{% if user.age %}, {{ user.age }}{% endif %}
-                        </h2>
-                        <p style="color: #fd267d; font-weight: 600; font-size: 0.9rem; margin-top: 5px;">
-                            <i class="bi bi-geo-alt-fill"></i> {{ user.city|default:"Earth" }}
-                        </p>
-                    </div>
-
-                    {% if user.bio %}
-                    <div class="mb-4">
-                        <h6 style="text-transform: uppercase; font-size: 0.75rem; font-weight: 700; color: #ced4da; letter-spacing: 1px;">About me</h6>
-                        <p style="color: #495057; line-height: 1.4; margin-bottom: 0;">{{ user.bio }}</p>
-                    </div>
-                    {% endif %}
-
-                    <form action="{% url 'logout' %}" method="post" class="mt-4">
+                {% if is_editing %}
+                <div class="p-4 p-md-5">
+                    <h2 class="fw-bold mb-4">Edit Profile</h2>
+                    <form method="post" enctype="multipart/form-data" class="bimber-form">
                         {% csrf_token %}
-                        <button type="submit" class="btn w-100" style="background-color: #f8f9fa; color: #dc3545; border-radius: 12px; font-weight: 700; padding: 12px;">
-                            Log Out
-                        </button>
+                        <div class="row">
+                            {% for field in form %}
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold text-uppercase">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-dark px-4 py-2" style="border-radius: 10px;">Save</button>
+                            <a href="{% url 'profile' %}" class="btn btn-outline-secondary px-4 py-2" style="border-radius: 10px;">Cancel</a>
+                        </div>
                     </form>
                 </div>
+
+                {% else %}
+                <div class="row g-0">
+                    <div class="col-md-5" style="min-height: 500px; background-color: #f8f9fa;">
+                        {% if user.photo %}
+                            <img src="{{ user.photo.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                            <div class="h-100 d-flex flex-column align-items-center justify-content-center text-muted">
+                                <i class="bi bi-person-fill" style="font-size: 5rem; opacity: 0.2;"></i>
+                                <span>No photo</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-7 d-flex flex-column">
+                        <div class="p-4 p-md-5 flex-grow-1">
+                            <h1 style="font-weight: 800; font-size: 2.8rem; margin-bottom: 0;">
+                                {{ user.username }}{% if user.age %}, {{ user.age }}{% endif %}
+                            </h1>
+                            <div class="badge rounded-pill px-3 py-2 mt-2 mb-4" style="background-color: rgba(253, 38, 125, 0.1); color: #fd267d; font-weight: 700;">
+                                <i class="bi bi-geo-alt-fill"></i> {{ user.city|default:"Not specified" }}
+                            </div>
+
+                            <h6 style="text-transform: uppercase; font-size: 0.8rem; font-weight: 800; color: #ced4da; letter-spacing: 2px;">Bio</h6>
+                            <p style="font-size: 1.1rem; color: #495057; line-height: 1.6;">
+                                {{ user.bio|default:"No bio yet..." }}
+                            </p>
+
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <small class="text-muted d-block">Gender</small>
+                                    <span class="fw-bold">{{ user.gender|default:"—" }}</span>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted d-block">Email</small>
+                                    <span class="fw-bold text-truncate d-block">{{ user.email }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 p-md-5 bg-light border-top d-flex gap-3">
+                            <a href="?edit=1" class="btn btn-dark flex-grow-1 py-3" style="border-radius: 15px; font-weight: 700;">
+                                <i class="bi bi-pencil-square me-2"></i> Edit Profile
+                            </a>
+                            <form action="{% url 'logout' %}" method="post" class="m-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger py-3 px-4" style="border-radius: 15px;">
+                                    Log Out
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .bimber-form input, .bimber-form textarea, .bimber-form select {
+        width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 12px; background-color: #f8f9fa; margin-bottom: 10px;
+    }
+</style>
 {% endblock %}
