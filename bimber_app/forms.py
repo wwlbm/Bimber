@@ -15,6 +15,11 @@ class CustomUserCreationForm(UserCreationForm):
             raise forms.ValidationError("Age must be from 16 to 60 years")
         return age
 
+    def clean_city(self):
+        city = self.cleaned_data.get('city')
+        city = city.lower()
+        return city
+
 
 class ProfileEditForm(forms.ModelForm):
     class Meta:
@@ -35,3 +40,9 @@ class ProfileEditForm(forms.ModelForm):
         if age > 60 or age < 16:
             raise forms.ValidationError("Age must be from 16 to 60 years")
         return age
+
+    def clean_city(self):
+        city = self.cleaned_data.get('city')
+        if city:
+            city = city.lower()
+        return city

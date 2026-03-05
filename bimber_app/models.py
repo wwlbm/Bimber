@@ -16,6 +16,28 @@ class Message(models.Model):
     recipient = models.ForeignKey(CustomUser, related_name="received_messages", on_delete=models.CASCADE)
     message = models.CharField(default='You was liked')
     created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-created_at']
+
+class Match(models.Model):
+    from_user = models.ForeignKey(
+        'CustomUser',
+        on_delete=models.CASCADE,
+        related_name='matches_sent'
+    )
+    to_user = models.ForeignKey(
+        'CustomUser',
+        on_delete=models.CASCADE,
+        related_name='matches_received'
+    )
+    is_like = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('from_user', 'to_user')
+
+    def __str__(self):
+        action = "like" if self.is_like else "dislike"
+        return f"{self.from_user.username} {action} {self.to_user.username}"

@@ -25,6 +25,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
+                        <li class="nav-item me-3">
+                            <a class="nav-link {% if request.resolver_match.view_name == 'discover' %}active fw-bold{% endif %}"
+                               href="{% url 'discover' %}" style="color: #444;">
+                                <i class="bi bi-search me-1"></i> Discover
+                            </a>
+                        </li>
+                        <li class="nav-item me-3">
+                            <a class="nav-link" href="{% url 'inbox' %}">
+                                <i class="bi bi-chat-dots"></i> Inbox
+                            </a>
+                        </li>
                         <a class="nav-link text-white" href="{% url 'profile' %}">My Profile</a>
                         <form action="{% url 'logout' %}" method="post" class="d-inline">
                             {% csrf_token %}

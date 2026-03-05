@@ -25,13 +25,17 @@
         </div>
 
         <div class="d-flex gap-4 mt-4">
-            <button class="btn btn-lg shadow" style="width: 70px; height: 70px; border-radius: 50%; background: white; border: 2px solid #eee; color: #ff4444; transition: 0.3s;" onclick="location.reload()">
+            <a href="{% url 'rate_user' person.id 'dislike' %}"
+               class="btn btn-lg shadow d-flex align-items-center justify-content-center"
+               style="width: 70px; height: 70px; border-radius: 50%; background: white; border: 2px solid #eee; color: #ff4444; transition: 0.3s; text-decoration: none;">
                 <i class="bi bi-x-lg" style="font-size: 1.5rem;"></i>
-            </button>
-            
-            <button class="btn btn-lg shadow text-white" style="width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(45deg, #fd267d, #ff7854); border: none; transition: 0.3s;" onclick="location.reload()">
+            </a>
+
+            <a href="{% url 'rate_user' person.id 'like' %}"
+               class="btn btn-lg shadow text-white d-flex align-items-center justify-content-center"
+               style="width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(45deg, #fd267d, #ff7854); border: none; transition: 0.3s; text-decoration: none;">
                 <i class="bi bi-heart-fill" style="font-size: 1.5rem;"></i>
-            </button>
+            </a>
         </div>
         {% endwith %}
 
@@ -39,7 +43,8 @@
         <div class="text-center">
             <div class="mb-4" style="font-size: 4rem;">🔍</div>
             <h3>Nobody here</h3>
-            <p class="text-muted">No way</p>
+            <p class="text-muted">Perhaps you have already evaluated all the candidates</p>
+            <p class="text-muted">or you have configured your profile incorrectly</p>
         </div>
     {% endif %}
 
