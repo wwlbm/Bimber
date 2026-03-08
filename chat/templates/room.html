@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-lg border-0" style="border-radius: 20px; overflow: hidden; height: 80vh;">
+        <div class="card-header bg-white border-bottom p-3">
+            <div class="d-flex align-items-center">
+                <a href="{% url 'view_profile' other_user.id %}" class="text-decoration-none d-flex align-items-center">
+                    <img src="{{ other_user.photo.url }}" class="rounded-circle me-3" style="width: 45px; height: 45px; object-fit: cover;">
+                    <h5 class="mb-0 text-dark">{{ other_user.username }}</h5>
+                </a>
+            </div>
+        </div>
+
+        <div id="chat-log" class="card-body p-4" style="background: #f0f2f5; overflow-y: auto;">
+            {% for msg in chat_messages %}
+                <div class="d-flex {% if msg.sender == request.user %}justify-content-end{% else %}justify-content-start{% endif %} mb-3">
+                    <div class="p-3 shadow-sm" style="max-width: 70%; border-radius: 15px;
+                         background: {% if msg.sender == request.user %}linear-gradient(45deg, #fd267d, #ff7854){% else %}#ffffff{% endif %};
+                         color: {% if msg.sender == request.user %}white{% else %}black{% endif %};">
+                        {{ msg.text }}
+                        <div class="text-end mt-1" style="font-size: 0.7rem; opacity: 0.7;">
+                            {{ msg.timestamp|date:"H:i" }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="card-footer bg-white border-top p-3">
+            <div class="input-group">
+                <input id="chat-message-input" type="text" class="form-control border-0 bg-light rounded-pill px-4" placeholder="Write a message">
+                <button id="chat-message-submit" class="btn text-white rounded-circle ms-2"
+                        style="background: #fd267d; width: 45px; height: 45px;">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ request.user.id|json_script:"user-id" }}
+{{ other_user.id|json_script:"other-user-id" }}
+
+<script>
+    const userId = JSON.parse(document.getElementById('user-id').textContent);
+    const otherUserId = JSON.parse(document.getElementById('other-user-id').textContent);
+
+    // Подключаемся к сокету
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/' + otherUserId + '/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const chatLog = document.querySelector('#chat-log');
+
+        // Определяем, мы отправили или нам
+        const isMe = data.sender_id === userId;
+        const align = isMe ? 'justify-content-end' : 'justify-content-start';
+        const bg = isMe ? 'linear-gradient(45deg, #fd267d, #ff7854)' : '#ffffff';
+        const color = isMe ? 'white' : 'black';
+
+        chatLog.innerHTML += `
+            <div class="d-flex ${align} mb-3">
+                <div class="p-3 shadow-sm" style="max-width: 70%; border-radius: 15px; background: ${bg}; color: ${color};">
+                    ${data.message}
+                </div>
+            </div>
+        `;
+        chatLog.scrollTop = chatLog.scrollHeight;
+    };
+
+    // Отправка по кнопке
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        if (message.trim() !== "") {
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';
+        }
+    };
+
+    // Отправка по Enter
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+</script>
+{% endblock %}

@@ -95,7 +95,7 @@ def rate_user(request, user_id, action):
         Message.objects.create(
             sender=request.user,
             recipient=target_user,
-            message=f"User {request.user.username} was liked you"
+            message=f"User {request.user.username} liked you"
         )
 
     return redirect('discover')

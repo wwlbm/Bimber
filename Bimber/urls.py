@@ -21,7 +21,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('main/', include('bimber_app.urls')),
+    path('', include('bimber_app.urls')),
+    path('chat/', include('chat.urls')),
 ]
 
 if settings.DEBUG:

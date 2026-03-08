@@ -44,6 +44,10 @@
                            style="background: linear-gradient(45deg, #fd267d, #ff7854); border: none; border-radius: 15px; font-weight: 700;">
                             <i class="bi bi-heart-fill me-2"></i> Like Back
                         </a>
+
+                        <a href="{% url 'chat:room' person.id %}" class="btn text-white w-100 rounded-pill" style="background: linear-gradient(45deg, #fd267d, #ff7854); font-weight: bold;">
+                            <i class="bi bi-chat-heart-fill"></i> Chat
+                        </a>
                         
                         <a href="{% url 'inbox' %}" class="btn btn-light btn-lg border-0" style="border-radius: 15px; background: #f8f9fa;">
                             Not now
